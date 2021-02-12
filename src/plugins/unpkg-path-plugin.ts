@@ -1,6 +1,5 @@
 import * as esbuild from 'esbuild-wasm';
 import axios from 'axios';
-import { request } from 'http';
 
 export const unpkgPathPlugin = () => {
   return {
@@ -14,12 +13,15 @@ export const unpkgPathPlugin = () => {
         if (args.path.includes('./') || args.path.includes('../')) {
           return {
             namespace: 'a',
-            path: new URL(args.path, 'http://unpkg.com' + args.resolveDir).href,
+            path: new URL(
+              args.path,
+              'https://unpkg.com' + args.resolveDir + '/'
+            ).href,
           };
         }
         return {
           namespace: 'a',
-          path: `http://unpkg.com/${args.path}`,
+          path: `https://unpkg.com/${args.path}`,
         };
       });
 
@@ -30,7 +32,7 @@ export const unpkgPathPlugin = () => {
           return {
             loader: 'jsx',
             contents: `
-              import message from 'tiny-test-pkg';
+              const message = require('react');
               console.log(message);
             `,
           };
@@ -40,7 +42,7 @@ export const unpkgPathPlugin = () => {
         return {
           loader: 'jsx',
           contents: data,
-          resolveDir: new URL('.', request.responseURL).pathname,
+          resolveDir: new URL('./', request.responseURL).pathname,
         };
       });
     },
