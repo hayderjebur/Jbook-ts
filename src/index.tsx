@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
